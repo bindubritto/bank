@@ -1,0 +1,45 @@
+1. First a database design korlam. Foriegn key, Unique Key thik moto dilam.
+
+
+2. Docker image docker hub theke pull korlam and exec korlam. Migration script likhlam.
+3. golang/migrate package use kora hoy ei migrate korar jonno. up and down script alada alada kore generate hoy.
+
+up script ta forward change korar jonno use hoy, down script ta reverse order a kaj kore. 
+Down script ta emon vabe likha hoy jate primary key wala table gula sob seshe drop hoy. 
+
+4. Erpore amra makefile create korlam, bar bar same command na chalanor jonno.
+
+migrate create -ext sql -dir db/migration -seq init_schema
+
+
+docker exec -it postgres12 /bin/sh  eita use kore 
+
+
+Vid - 04 - Crud
+
+Different way te korte pari
+a) low level standard library, database/sql use kore.
+
+Very fast & straightforward
+But need to manual mapping for SQL fields to variable.
+
+b) GORM 
+
+Very short code
+But need to learn GORM function to write query.
+Run slowly on high load.
+
+c) SQLX
+
+Fast & easy to use.
+Fields mapping via query text & struct tags.
+Failure won't occur until runtime
+
+d) SQLC
+
+Fast & easy to use
+Automatic code generation.
+Catch SQL query errors before generating codes.
+postgres full support.
+
+brew install sqlc
