@@ -43,3 +43,27 @@ Catch SQL query errors before generating codes.
 postgres full support.
 
 brew install sqlc
+
+sqlc.yaml file generate hoilo, seikhane kichu config bole dilam. 
+
+query folder a query gulu likhe dilam, and seivabe sqlc folder a go er crud code
+gerenate hoye gelo.
+
+
+
+#Vid - 05 Unit Test
+
+Jehetu query gula test korbo, so database er sathe kotha
+bolte hobe, and ei jonno db er driver lagbe. which is lib/pq
+
+go get github.com/lib/pq
+
+
+test result check korar jonno j package lage, ta holo testify package.
+
+go get github.com/stretchr/testify
+
+Eita diye bujha jay, koto percent code cover hoise unit test er maddhome.
+
+
+#Vid - 06 Database Transaction
