@@ -66,4 +66,33 @@ go get github.com/stretchr/testify
 Eita diye bujha jay, koto percent code cover hoise unit test er maddhome.
 
 
+
+*** How to run ***
+
+make postgres and open docker deamon first.
+
+
 #Vid - 06 Database Transaction
+
+Transfer 10 USD from account A to account B.
+
+5 things will happen behind the scene
+
+#1. Create a transfer record with amount = 10;
+
+#2. Create an account entry for account A with amount = -10;
+
+#3. Create an account entry for account B with amount = +10;
+
+#4. Subtract 10 from the balance of account A
+
+#5. Add 10 to the balance of account B
+
+
+But why we need DB Transaction? - 
+
+1. To provide a reliable and consistent unit of work, even in case of system failure.
+2. To provide isolation between programs that access the database concurrently.
+
+So, ACID property should obey.
+
