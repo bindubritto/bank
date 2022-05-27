@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-// SQLStore provides all functions to execute SQL queries and transactions
+// SQLStore provides all functions to execute db queries and transactions, composition happened here
 type Store struct {
 	*Queries
 	db *sql.DB
@@ -53,4 +53,100 @@ type TransferTxResult struct {
 	ToAccount   Account  `json:"to_account"`
 	FromEntry   Entry    `json:"from_entry"`
 	ToEntry     Entry    `json:"to_entry"`
+}
+
+// var txKey = struct{}{}
+
+// TransferTx function performs a money transfer from one accont to the other
+// It creates a transfer record, add account entries, and update account's balance within a single database transaction
+func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (TransferTxResult, error) {
+	var result TransferTxResult
+
+	err := store.execTx(ctx, func(q *Queries) error {
+
+		var err error
+
+		// txName := ctx.Value(txKey)
+
+		// fmt.Println(txName, "Create Transfer")
+		result.Transfer, err = q.CreateTransfer(ctx, CreateTransferParams{
+			FromAccountID: arg.FromAccountID,
+			ToAccountID:   arg.ToAccountID,
+			Amount:        arg.Amount,
+		})
+		if err != nil {
+			return err
+		}
+
+		// fmt.Println(txName, "Create Entry 1")
+		result.FromEntry, err = q.CreateEntry(ctx, CreateEntryParams{
+			AccountID: arg.FromAccountID,
+			Amount:    -arg.Amount,
+		})
+		if err != nil {
+			return err
+		}
+
+		// fmt.Println(txName, "Create Entry 2")
+		result.ToEntry, err = q.CreateEntry(ctx, CreateEntryParams{
+			AccountID: arg.ToAccountID,
+			Amount:    arg.Amount,
+		})
+		if err != nil {
+			return err
+		}
+
+		// ToDo: update account's balance
+
+		// Case - 01 || Weak implementation to see why locking is happening
+		// fmt.Println(txName, "Get Account 1")
+
+		// Two funciton to one combined.
+		// account1, err := q.GetAccountForUpdate(ctx, arg.FromAccountID)
+		// if err != nil {
+		// 	return err
+		// }
+
+		// fmt.Println(txName, "Update Account 1")
+		// result.FromAccount, err = q.UpdateAccount(ctx, UpdateAccountParams{
+		// 	ID:      arg.FromAccountID,
+		// 	Balance: account1.Balance - arg.Amount,
+		// })
+		// if err != nil {
+		// 	return err
+		// }
+
+		result.FromAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
+			ID:     arg.FromAccountID,
+			Amount: -arg.Amount,
+		})
+		if err != nil {
+			return err
+		}
+
+		// Same goes here. Combined two to one.
+		// fmt.Println(txName, "Get Account 2")
+		// account2, err := q.GetAccountForUpdate(ctx, arg.ToAccountID)
+		// if err != nil {
+		// 	return err
+		// }
+
+		// fmt.Println(txName, "Update Account 2")
+		// result.ToAccount, err = q.UpdateAccount(ctx, UpdateAccountParams{
+		// 	ID:      arg.ToAccountID,
+		// 	Balance: account2.Balance + arg.Amount,
+		// })
+
+		result.ToAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
+			ID:     arg.ToAccountID,
+			Amount: arg.Amount,
+		})
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	return result, err
 }

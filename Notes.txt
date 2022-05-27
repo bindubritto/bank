@@ -96,3 +96,77 @@ But why we need DB Transaction? -
 
 So, ACID property should obey.
 
+
+composition need to study
+
+lex (closure) need to study
+
+channel need to study.
+channel is designed to connect concerent go routine to share data efficiently with each other with explicit locking system.
+
+go routine need to study well.
+
+
+Database transaction likha khub easy but concurrency khub valovabe handle korte hobe. Noyto nightmare hoye jabe.
+
+Eijonno j kono transaction type query gulann k concurrency test er moddhe diye jete hoy. amra 5 ta concerent request korbo,
+and dekhbo kono jhamela hoy kina. several concerent go routine chalabo amra.
+
+
+
+
+Video - 07
+
+Need to carefully handle the concerent transaction to avoid deadlock & database locking.
+
+TDD - Test Driven Development
+
+We'll write test code first to make our code break. Then we gradually improve our code to fight against real world battle.
+
+
+
+docker exec -it postgres12 psql -U root -d bank
+
+BEGIN;
+
+SELECT * FROM accounts WHERE id = 1;
+
+ROLLBACK;
+
+BEGIN;
+
+SELECT * FROM accounts WHERE id = 1 FOR UPDATE;
+
+UPDATE accounts SET balance = 500 WHERE id = 1;
+
+COMMIT;
+
+
+transfers table & account table er moddhe somporko hosse account table er id diye, Foriegn
+key hisebe. So, account id te kono update korle seitar effect porbe transfer table a.
+
+Ei jonno jokhon e amra kono update operation chalabo account table a, eita table k lock kora
+dorkar hoye pore, data consistency er jonno. 
+
+Jehetu Foriegn key constraint er jonno deadlock hoitese. Amra borong tulei dei. Diye dekhi ki hoy.
+
+Eibar test pass korbe. But amra amader Foriegn key constraint haray fellam. Which is not good. 
+
+
+Better way to solve it.
+
+Amra jodi account update er query er dike takai dekhte pabo, eita sudhu balance kei
+update kortese. Onno kono column k noy. Jar karone amader locking a jaite hobe. 
+
+So, jodi ami bole dite pari j kono account k update korar somoy tar id k touch korbo na,
+tahole psql er r lock korar dorkar nai. So, deadlock eo jabe na.
+
+
+Er thekeo better way ache.
+
+currently amra 2 ta query diye update kortechi account. 
+
+1. Get the account,
+2. Update that account.
+
+Eitake optimize koore amra ekta single query te convert korte pari. 
