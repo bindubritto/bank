@@ -170,3 +170,17 @@ currently amra 2 ta query diye update kortechi account.
 2. Update that account.
 
 Eitake optimize koore amra ekta single query te convert korte pari. 
+
+Video - 08
+
+The best way to handle deadlock is to avoid it.
+
+Surute amra always 1 ta account theke second ekta account a taka transfer kortesilam. But amra jodi reverse direction a
+money transfer suru kori tahole abaro sei deadlock a pore jabe amader. 
+
+Solution hoilo, query order matter. consistent order a query gulu likhte hobe jeno deadlock avoid kora jay. 
+
+Best defence on deadlock is to avoid them.
+
+Scenario, 2 ta concurrent transaction same query order a cholle, ekta query COMMIT er age porjonto onno ta locked obosthay thakbe. But
+deadlock a porbe na, ei rokom consistent manner a query run korle.
