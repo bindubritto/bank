@@ -194,3 +194,7 @@ Video - 10
 Workflow -> Jobs -> Steps -> Actions
 
 Actions are standalone command.
+
+Video - 11
+
+go get -u github.com/gin-gonic/gin
