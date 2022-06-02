@@ -9,7 +9,7 @@ on:
 jobs:
 
   test:
-  - name: Test
+    name: Test
     runs-on: ubuntu-latest
 
     steps:
@@ -21,5 +21,5 @@ jobs:
     - name: Checkout code into go modular directory
       uses: actions/checkout@v3
 
-    - name: test
+    - name: Test
       run: make test
