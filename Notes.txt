@@ -184,3 +184,13 @@ Best defence on deadlock is to avoid them.
 
 Scenario, 2 ta concurrent transaction same query order a cholle, ekta query COMMIT er age porjonto onno ta locked obosthay thakbe. But
 deadlock a porbe na, ei rokom consistent manner a query run korle.
+
+Video - 09 
+
+Read Phenomena of MySQL & Postgres.
+
+Video - 10
+
+Workflow -> Jobs -> Steps -> Actions
+
+Actions are standalone command.
