@@ -7,6 +7,7 @@ import (
 	"github.com/bindubritto/bank/api"
 	db "github.com/bindubritto/bank/db/sqlc"
 	"github.com/bindubritto/bank/utils"
+	_ "github.com/golang/mock/mockgen/model"
 	_ "github.com/lib/pq"
 )
 

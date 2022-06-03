@@ -198,3 +198,21 @@ Actions are standalone command.
 Video - 11
 
 go get -u github.com/gin-gonic/gin
+
+video - 12
+
+viper used for load configuration from file and will overwrite by env variable.
+
+video - 13
+
+ls -l ~/go/bin
+
+function gulur interface create korar jonno sqlc er config a emit interface true kore dite hobe.
+
+main.go te
+
+	_ "github.com/golang/mock/mockgen/model"
+
+import na korle error khabe. 
+
+mockgen -package mockdb -destination db/mock/store.go github.com/bindubritto/bank/db/sqlc Store
